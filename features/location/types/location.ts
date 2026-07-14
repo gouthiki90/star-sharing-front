@@ -1,8 +1,8 @@
 export interface LocationData {
   /** 위도 */
-  latitude: string;
+  latitude: number;
   /** 경도 */
-  longitude: string;
+  longitude: number;
   /** 유저 시간 */
   time: string;
 }

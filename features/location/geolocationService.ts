@@ -20,23 +20,23 @@ export const getLocalTimeStamp = () => {
 
     // console.log("getLocalTimeStamp: ", localTime);
 
-    return localTime;
+    return localTime || new Date().toISOString(); // fallback to ISO string if formatting fails
   } catch (error) {
     console.error("Error getting local timestamp:", error);
   }
 };
 
 /** api에 맞춰서 보낼값 */
-export const returnResultForServer = (value: LocationData) => {
-  try {
-    const latitude = value.latitude.split(".")[0];
-    const longitude = value.longitude.split(".")[0];
+// export const returnResultForServer = (value: LocationData) => {
+//   try {
+//     const latitude = value.latitude.split(".")[0];
+//     const longitude = value.longitude.split(".")[0];
 
-    return { latitude, longitude, time: value.time };
-  } catch (error) {
-    console.error("Error returning result to server:", error);
-  }
-};
+//     return { latitude, longitude, time: value.time };
+//   } catch (error) {
+//     console.error("Error returning result to server:", error);
+//   }
+// };
 
 /** geolocation을 통해 좌표 가져옴 */
 export const getCurrentLocation = async () => {
@@ -47,12 +47,11 @@ export const getCurrentLocation = async () => {
 
     const localTime = getLocalTimeStamp();
 
-    // 일단 스트링으로
-    const placeAndLocalTime = returnResultForServer({
-      latitude: position.coords.latitude.toString(),
-      longitude: position.coords.longitude.toString(),
-      time: localTime?.toString() || "",
-    });
+    const placeAndLocalTime: LocationData = {
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude,
+      time: localTime || new Date().toISOString(),
+    };
 
     console.log("getCurrentLocation: ", placeAndLocalTime);
 
