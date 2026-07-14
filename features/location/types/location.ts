@@ -1,8 +1,8 @@
-export interface Location {
+export interface LocationData {
   /** 위도 */
-  latitude: number;
+  latitude: string;
   /** 경도 */
-  longitude: number;
+  longitude: string;
   /** 유저 시간 */
   time: string;
 }
