@@ -1,3 +1,4 @@
+import { postLocationToServer } from "@/lib/apis/postApis";
 import { LocationData } from "./types/location";
 
 export const getLocalTimeStamp = () => {
@@ -41,21 +42,24 @@ export const getLocalTimeStamp = () => {
 /** geolocation을 통해 좌표 가져옴 */
 export const getCurrentLocation = async () => {
   try {
+    /** 좌표값 */
     const position = await new Promise<GeolocationPosition>((resolve, reject) =>
       navigator.geolocation.getCurrentPosition(resolve, reject),
     );
 
+    /** 브라우저 로컬시간값 */
     const localTime = getLocalTimeStamp();
 
     const placeAndLocalTime: LocationData = {
       latitude: position.coords.latitude,
       longitude: position.coords.longitude,
-      time: localTime || new Date().toISOString(),
+      local_time: localTime || new Date().toISOString(),
     };
 
     console.log("getCurrentLocation: ", placeAndLocalTime);
 
-    return placeAndLocalTime;
+    /** place and locatime post to server */
+    await postLocationToServer(placeAndLocalTime);
   } catch (error) {
     console.error("Error getting current location:", error);
   }

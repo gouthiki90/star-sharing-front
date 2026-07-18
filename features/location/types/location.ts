@@ -4,5 +4,5 @@ export interface LocationData {
   /** 경도 */
   longitude: number;
   /** 유저 시간 */
-  time: string;
+  local_time: string;
 }
