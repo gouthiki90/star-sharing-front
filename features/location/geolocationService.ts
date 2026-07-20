@@ -1,6 +1,8 @@
 import { postLocationToServer } from "@/lib/apis/postApis";
 import { LocationData } from "./types/location";
+import { saveTokenToSession } from "@/lib/hooks/saveToken";
 
+/** 브라우저 로컬타임 가져오기 */
 export const getLocalTimeStamp = () => {
   /** 호출 시 얻은 date값 */
   const date = new Date();
@@ -27,18 +29,6 @@ export const getLocalTimeStamp = () => {
   }
 };
 
-/** api에 맞춰서 보낼값 */
-// export const returnResultForServer = (value: LocationData) => {
-//   try {
-//     const latitude = value.latitude.split(".")[0];
-//     const longitude = value.longitude.split(".")[0];
-
-//     return { latitude, longitude, time: value.time };
-//   } catch (error) {
-//     console.error("Error returning result to server:", error);
-//   }
-// };
-
 /** geolocation을 통해 좌표 가져옴 */
 export const getCurrentLocation = async () => {
   try {
@@ -59,8 +49,12 @@ export const getCurrentLocation = async () => {
     console.log("getCurrentLocation: ", placeAndLocalTime);
 
     /** place and locatime post to server */
-    await postLocationToServer(placeAndLocalTime);
+    const response = await postLocationToServer(placeAndLocalTime);
+
+    /** 세션 스토리지에 토큰 저장 */
+    await saveTokenToSession(response);
   } catch (error) {
     console.error("Error getting current location:", error);
+    return error;
   }
 };
