@@ -29,7 +29,7 @@ export const getLocalTimeStamp = () => {
   }
 };
 
-/** geolocation을 통해 좌표 가져옴 */
+/** get geolocation data */
 export const getCurrentLocation = async () => {
   try {
     /** 좌표값 */
@@ -48,13 +48,24 @@ export const getCurrentLocation = async () => {
 
     console.log("getCurrentLocation: ", placeAndLocalTime);
 
-    /** place and locatime post to server */
-    const response = await postLocationToServer(placeAndLocalTime);
-
-    /** 세션 스토리지에 토큰 저장 */
-    await saveTokenToSession(response);
+    return placeAndLocalTime;
   } catch (error) {
     console.error("Error getting current location:", error);
     return error;
+  }
+};
+
+/** send to server */
+export const postCurrentLocation = async () => {
+  try {
+    const placeAndLocalTime = await getCurrentLocation();
+    const response = await postLocationToServer(
+      placeAndLocalTime as LocationData,
+    );
+    await saveTokenToSession(response);
+    return response;
+  } catch (error) {
+    console.error("Error posting current location:", error);
+    throw error;
   }
 };
