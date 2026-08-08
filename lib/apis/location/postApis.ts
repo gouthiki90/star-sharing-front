@@ -1,5 +1,5 @@
 import { LocationData } from "@/features/location/types/location";
-import AxiosInstance from "./index";
+import AxiosInstance from "../index";
 
 /** location 데이터를 서버에 POST */
 export function postLocationToServer(locationData: LocationData) {
