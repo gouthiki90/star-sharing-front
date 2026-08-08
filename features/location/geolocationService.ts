@@ -1,4 +1,4 @@
-import { postLocationToServer } from "@/lib/apis/postApis";
+import { postLocationToServer } from "@/lib/apis/location/postApis";
 import { LocationData } from "./types/location";
 import { saveTokenToSession } from "@/lib/hooks/saveToken";
 
